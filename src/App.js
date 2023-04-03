@@ -1,4 +1,4 @@
-import { SettingsApplications } from "@material-ui/icons";
+import { ContactSupportOutlined, NetworkWifi, SettingsApplications } from "@material-ui/icons";
 import React, { useState, useEffect } from "react";
 import { Products, Navbar, Cart, Checkout } from './components';
 import { commerce } from "./lib/commerce";
@@ -10,6 +10,12 @@ const App = () => {
 
     // State of the check out cart
     const [cart, setCart] = useState({});
+
+    // State of final order
+    const [order, setOrder] = useState({});
+
+    // State of error message for checkout
+    const [errorMessage, setErrorMessage] = useState('');
 
     // Fetch all Products and their info from API
     const fetchProducts = async () => {
@@ -45,6 +51,26 @@ const App = () => {
         setCart(cart);
     };
 
+    // Func to refresh cart to empty after checkout
+    const refreshCart = async() => {
+        const newCart = await commerce.cart.refresh();
+        
+        // Set state of website cart to empty
+        setCart(newCart);
+    };
+
+    const handleCaptureCheckout = async (checkoutTokenId, newOrder) => {
+        try {
+            const incomingOrder = await commerce.checkout.capture(checkoutTokenId, newOrder);
+            
+            setOrder(incomingOrder);
+            refreshCart();
+
+        } catch (error) {
+            setErrorMessage(error.data.error.message);
+        }
+    };
+
     // Invoke functions when 
     useEffect(() => {
         fetchProducts();
@@ -70,11 +96,16 @@ const App = () => {
                         handleEmptyCart={handleEmptyCart} />} 
                     />
                     <Route path="/checkout" element={
-                        <Checkout cart={cart} /> }
+                        <Checkout 
+                            cart={cart} 
+                            order={order}
+                            onCaptureCheckout={handleCaptureCheckout}
+                            error={errorMessage}
+                            /> }
                     />
                 </Routes>    
         </Router>
     );
 };
 
-export default App
+export default App;
