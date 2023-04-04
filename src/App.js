@@ -1,4 +1,3 @@
-import { ContactSupportOutlined, NetworkWifi, SettingsApplications } from "@material-ui/icons";
 import React, { useState, useEffect } from "react";
 import { Products, Navbar, Cart, Checkout } from './components';
 import { commerce } from "./lib/commerce";
@@ -76,8 +75,6 @@ const App = () => {
         fetchProducts();
         fetchCart();
     }, []);
-    
-    //commerce.cart.refresh();
 
     return (
         <Router>

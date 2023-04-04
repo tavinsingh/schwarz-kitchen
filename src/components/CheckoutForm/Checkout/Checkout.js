@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button } from '@material-ui/core';
-import { ScatterPlotSharp, SettingsInputHdmiSharp, SettingsPhoneSharp, SettingsPowerSharp } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 
 import { commerce } from '../../../lib/commerce';
