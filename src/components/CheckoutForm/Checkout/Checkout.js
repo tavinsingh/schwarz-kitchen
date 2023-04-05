@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 
 import { commerce } from '../../../lib/commerce';
 import PickupInfo from '../PickupInfo';
@@ -12,6 +12,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     console.log(order)
     const classes = useStyles();
     const steps = ['Pickup Info', 'Payment Details'];
+    const navigate = useNavigate();
 
     const [checkoutToken, setCheckoutToken] = useState(null);
     const [pickupInfo, setpickupInfo] = useState({});
@@ -29,7 +30,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
                 setCheckoutToken(token);
 
             } catch (error) {
-                console.log(error);
+                navigate('/');
             }
         }
         generateToken();
